@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     
     /// First row
     @IBOutlet var position00View: UIView!
-    @IBOutlet var positio00Button: UIButton!
+    @IBOutlet var position00Button: UIButton!
     @IBOutlet var position00Label: UILabel!
     
     @IBOutlet var position01View: UIView!
@@ -69,7 +69,7 @@ class HomeViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func playButtonTapped(_ sender: Any) {
-        resetCell(cellLabel: position00Label, cellButton: positio00Button)
+        resetCell(cellLabel: position00Label, cellButton: position00Button)
         resetCell(cellLabel: position01Label, cellButton: position01Button)
         resetCell(cellLabel: position02Label, cellButton: position02Button)
         resetCell(cellLabel: position10Label, cellButton: position10Button)
@@ -85,7 +85,7 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func resetButtonTapped(_ sender: Any) {
-        resetCell(cellLabel: position00Label, cellButton: positio00Button)
+        resetCell(cellLabel: position00Label, cellButton: position00Button)
         resetCell(cellLabel: position01Label, cellButton: position01Button)
         resetCell(cellLabel: position02Label, cellButton: position02Button)
         resetCell(cellLabel: position10Label, cellButton: position10Button)
@@ -100,37 +100,26 @@ class HomeViewController: UIViewController {
         playButton.isHidden = true
     }
 
-    @IBAction func cellInGridTapped(sender: AnyObject) {
-        guard let button = sender as? UIButton else {
-            return
-        }
-        switch button.tag {
+    @IBAction func cellInGridTapped(sender: UIButton) {
+      
+        switch sender.tag {
         case 1:
-            setChosenCell(positionLabel: position00Label, positionButton: positio00Button)
             viewModel.fillMatrixPositions(row: 0, column: 0)
         case 2:
-            setChosenCell(positionLabel: position01Label, positionButton: position01Button)
             viewModel.fillMatrixPositions(row: 0, column: 1)
         case 3:
-            setChosenCell(positionLabel: position02Label, positionButton: position02Button)
             viewModel.fillMatrixPositions(row: 0, column: 2)
         case 4:
-            setChosenCell(positionLabel: position10Label, positionButton: position10Button)
             viewModel.fillMatrixPositions(row: 1, column: 0)
         case 5:
-            setChosenCell(positionLabel: position11Label, positionButton: position11Button)
             viewModel.fillMatrixPositions(row: 1, column: 1)
         case 6:
-            setChosenCell(positionLabel: position12Label, positionButton: position12Button)
             viewModel.fillMatrixPositions(row: 1, column: 2)
         case 7:
-            setChosenCell(positionLabel: position20Label, positionButton: position20Button)
             viewModel.fillMatrixPositions(row: 2, column: 0)
         case 8:
-            setChosenCell(positionLabel: position21Label, positionButton: position21Button)
             viewModel.fillMatrixPositions(row: 2, column: 1)
         case 9:
-            setChosenCell(positionLabel: position22Label, positionButton: position22Button)
             viewModel.fillMatrixPositions(row: 2, column: 2)
         default:
             return
@@ -139,18 +128,19 @@ class HomeViewController: UIViewController {
 
     // MARK: - Private methods
     
-    private func setChosenCell(positionLabel: UILabel, positionButton: UIButton) {
-        positionLabel.text = viewModel.playerIcon
-        positionLabel.textColor = .blue
-        if viewModel.playerIcon == "X" {
-            positionLabel.textColor = .red
+    private func setChosenCell(positionLabel: String, positionButton: String) {
+        if let inGridPositionLabel = value(forKey: positionLabel) as? UILabel {
+            inGridPositionLabel.text = viewModel.playerIcon
+            inGridPositionLabel.textColor = viewModel.iconColor
+            inGridPositionLabel.isHidden = false
         }
-        positionLabel.isHidden = false
-        positionButton.isHidden = true
+        if let inGridPositionButton = value(forKey: positionButton) as? UIButton {
+            inGridPositionButton.isHidden = true
+        }
     }
     
     private func disableCellsButton() {
-        positio00Button.isEnabled = false
+        position00Button.isEnabled = false
         position01Button.isEnabled = false
         position02Button.isEnabled = false
         position10Button.isEnabled = false
@@ -176,6 +166,10 @@ class HomeViewController: UIViewController {
 // MARK: - Extensions
 
 extension HomeViewController: HomeViewModelDelegate {
+    func refreshGrid(row: Int, column: Int) {
+        setChosenCell(positionLabel: "position\(row)\(column)Label", positionButton: "position\(row)\(column)Button")
+    }
+    
     func changePlayer() {
         gameStateLabel.text = "E' il turno del giocatore: \(viewModel.playerIcon)"
     }
@@ -194,4 +188,3 @@ extension HomeViewController: HomeViewModelDelegate {
         }
     }
 }
-

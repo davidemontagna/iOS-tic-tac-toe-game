@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 protocol HomeViewModelDelegate: AnyObject {
     func showResult(result: HomeViewModelUseCases)
     func changePlayer()
+    func refreshGrid(row: Int, column: Int)
 }
 
 class HomeViewModel: NSObject {
@@ -23,6 +25,7 @@ class HomeViewModel: NSObject {
     var playerActive = 3
     var matrix = [[00, 01, 02], [10, 11, 12], [20, 21, 22]]
     var playerIcon = "O"
+    var iconColor = UIColor(ciColor: .blue)
     var result = ""
     var gameHasEnded = false
     var playerXScore = 0
@@ -41,7 +44,12 @@ class HomeViewModel: NSObject {
     func fillMatrixPositions(row: Int, column: Int) {
         matrix[row][column] = playerActive
         counter += 1
-        checkResult()
+        if counter >= 5 {
+            checkResult()
+        }
+        if matrix[row][column] == 3 || matrix[row][column] == 4 {
+            delegate?.refreshGrid(row: row, column: column)
+        }
         changePlayerActive()
         print(matrix)
         print(counter)
@@ -51,9 +59,11 @@ class HomeViewModel: NSObject {
         if playerActive == 3 {
             playerIcon = "X"
             playerActive = 4
+            iconColor = UIColor(ciColor: .red)
         } else {            
             playerIcon = "O"
             playerActive = 3
+            iconColor = UIColor(ciColor: .blue)
         }
         if result == "" {
             delegate?.changePlayer()
@@ -93,7 +103,6 @@ class HomeViewModel: NSObject {
     // MARK: - Private methods
 
     private func checkResult() {
-        if counter < 5 { return }
         
         for index in 0...matrix.count - 1 {
             gameHasEnded = checkRow(row: index)

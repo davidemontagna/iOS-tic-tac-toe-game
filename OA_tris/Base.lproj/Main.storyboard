@@ -419,7 +419,7 @@
                     <connections>
                         <outlet property="gameStateLabel" destination="Z5n-9A-kqA" id="j8n-ca-R4x"/>
                         <outlet property="playButton" destination="ex9-sO-SP8" id="cV4-Mv-OOw"/>
-                        <outlet property="positio00Button" destination="ERh-NL-vp7" id="29P-Vd-CTW"/>
+                        <outlet property="position00Button" destination="ERh-NL-vp7" id="voT-Ap-g4L"/>
                         <outlet property="position00Label" destination="iuz-el-Q4s" id="lS3-We-5Db"/>
                         <outlet property="position00View" destination="RIX-4N-daV" id="ksw-qS-OF3"/>
                         <outlet property="position01Button" destination="wgV-gS-F7X" id="dbt-o6-Nhs"/>
